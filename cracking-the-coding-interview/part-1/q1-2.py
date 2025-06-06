@@ -6,15 +6,21 @@ other.
 "Time complexity: O(n) where n is the length of the input strings"
 "Space complexity: O(n) since we are using a dictionary to store characters"
 def check_permutation(str1: str, str2: str) -> bool:
-    is_permutation = True
+
+    if len(str1) != len(str2):
+        return False
+    
     str1_dict = {}
     for char in str1:
-        str1_dict[char] = True
+        str1_dict[char] = str1_dict.get(char,0) + 1
+
     for char in str2:
         if  char not in str1_dict:
-            is_permutation = False
-            break
-    return is_permutation
+            return False
+        str1_dict[char] -= 1
+        if str1_dict[char] < 0:
+            return False
+    return True
 
 "Test cases including edge cases"
 def run_tests(func):
