@@ -58,3 +58,21 @@ class SinglyLinkedList:
                     previous_node = compared_node
                 compared_node = compared_node.next
             current = current.next
+
+    """
+    Question 2.2: Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
+    """
+    """
+    Assume that the last element is k=1, the second to last is k=2, and so on.
+    """
+    "Time Complexity: O(n), Space Complexity: O(1)"
+    def return_kth_to_last(self, k):
+        # Find the end of the list, keep track of the kth element from the current element
+        current_node = self.head
+        kth_element = self.head
+        while current_node:
+            k -= 1
+            if k < 0:
+                kth_element = kth_element.next
+            current_node = current_node.next
+        return kth_element.val if kth_element and k <= 0 else None
