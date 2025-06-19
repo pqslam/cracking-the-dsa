@@ -17,6 +17,7 @@ class SinglyLinkedList:
             while node.next != None:
                 node = node.next
             node.next = new_node
+        return new_node
 
     def print_linked_list(self):
         current_node = self.head
@@ -76,3 +77,22 @@ class SinglyLinkedList:
                 kth_element = kth_element.next
             current_node = current_node.next
         return kth_element.val if kth_element and k <= 0 else None
+
+    """
+    Question 2.3: Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
+    the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
+    that node.
+    EXAMPLE
+    lnput:the node c from the linked list a->b->c->d->e->f
+    Result: nothing is returned, but the new linked list looks like a ->b->d->e->f
+    """
+
+    """
+    Because we can only access to that node, does that mean the parameter of this function is a node between first and last nodes? 
+    Do we need to check that the input node is not first or last?
+    """
+
+    def remove_middle_node(self, target_node: Node)->None:
+        if target_node.next: #Only process if the target node is not the last one.
+                target_node.val = target_node.next.val
+                target_node.next = target_node.next.next
