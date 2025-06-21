@@ -96,3 +96,54 @@ class SinglyLinkedList:
         if target_node.next: #Only process if the target node is not the last one.
                 target_node.val = target_node.next.val
                 target_node.next = target_node.next.next
+
+    
+    """
+    Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
+    before all nodes greater than or equal to x. If x is contained within the list the values of x only need
+    to be after the elements less than x (see below). The partition element x can appear anywhere in the
+    "right partition"; it does not need to appear between the left and right partitions.
+    EXAMPLE
+    Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition= 5]
+    Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
+    """
+
+    # 3 -> 5 -> 1 -> 5 -> 2 -> 10 -> 8 -> 4
+    """
+    Assume that all elements in the linkedlist are numbers for this question
+    From the example -> singly linkedlist
+    edge cases: empty, 1 element, all dups
+    """
+
+    "Time Complexity: O(n^2), Space Complexity: O(1)"
+    def make_partition(self, x: int)->None:
+        current_node = self.head
+        swap_node = None
+        while current_node:
+            if current_node.val >= x:
+                #Find the next possible position to swap
+                swap_node = current_node.next
+                while swap_node and swap_node.val >= x: 
+                    swap_node = swap_node.next
+                if not swap_node: # If the swap_node is None, then we go to the end of the list already.
+                    break
+                temp_val = current_node.val
+                current_node.val = swap_node.val
+                swap_node.val = temp_val
+            current_node = current_node.next
+
+    "Time Complexity: O(n), Space Complexity: O(1)"
+    def make_partition_optimal(self, x: int) -> None:
+        current_node = self.head.next if self.head else None
+        new_order = self.head
+        while current_node:
+            next_node = current_node.next
+            current_node.next = None
+            if current_node.val >= x:
+                new_order.next = current_node
+                new_order = current_node
+            else:
+                current_node.next = self.head
+                self.head = current_node 
+            current_node = next_node
+        self.print_linked_list()
