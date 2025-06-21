@@ -9,24 +9,9 @@ Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 """
 from singly_linkedlist import SinglyLinkedList
 
-# Test cases including edge cases
-def test_partition():
-    # Create a linked list: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
-    linked_list = SinglyLinkedList()
-    for val in [3, 5, 8, 5, 10, 2, 1]:
-        linked_list.add_node(val)
-
-    print("Original linked list: ", end=" ")
-    linked_list.print_linked_list()
-
-    # Partition around value 5
-    linked_list.make_partition_optimal(5)
-
-    # Validate that all values < 5 appear before any value >= 5
+def assert_partition_is_valid(linked_list, partition_val):
     current = linked_list.head
-    partition_val = 5
     seen_gte_partition = False
-
     while current:
         if current.val >= partition_val:
             seen_gte_partition = True
@@ -36,12 +21,67 @@ def test_partition():
                 f"Partition violated: found {current.val} after a value >= {partition_val}"
             )
         current = current.next
-
     print("Partitioning is valid ✅")
+
+# Test cases including edge cases
+def test_partition():
+    test_cases = [
+        {
+            "input": [3, 5, 8, 5, 10, 2, 1],
+            "partition": 5,
+            "description": "Normal mixed values"
+        },
+        {
+            "input": [],
+            "partition": 5,
+            "description": "Empty list"
+        },
+        {
+            "input": [1, 2, 3],
+            "partition": 5,
+            "description": "All values less than partition"
+        },
+        {
+            "input": [5, 6, 7],
+            "partition": 5,
+            "description": "All values greater than or equal to partition"
+        },
+        {
+            "input": [5],
+            "partition": 5,
+            "description": "Single node equal to partition"
+        },
+        {
+            "input": [1],
+            "partition": 5,
+            "description": "Single node less than partition"
+        },
+        {
+            "input": [10, 9, 8, 7, 6],
+            "partition": 5,
+            "description": "All nodes greater than partition, descending order"
+        },
+        {
+            "input": [2, 1, 0, -1, -5],
+            "partition": 5,
+            "description": "All nodes less than partition, descending order"
+        }
+    ]
+
+    for case in test_cases:
+        print(f"\nTesting case: {case['description']}")
+        linked_list = SinglyLinkedList()
+        for val in case["input"]:
+            linked_list.add_node(val)
+        print("Original linked list: ", end=" ")
+        linked_list.print_linked_list()
+
+        linked_list.make_partition_optimal(case["partition"])
+        assert_partition_is_valid(linked_list, case["partition"])
 
 def main():
     test_partition()
-    print("All tests passed!")
+    print("\nAll tests passed! ✅")
 
 if __name__ == "__main__":
     main()

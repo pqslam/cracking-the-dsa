@@ -136,6 +136,8 @@ class SinglyLinkedList:
     def make_partition_optimal(self, x: int) -> None:
         current_node = self.head.next if self.head else None
         new_order = self.head
+        if new_order:
+            new_order.next = None
         while current_node:
             next_node = current_node.next
             current_node.next = None
@@ -146,4 +148,5 @@ class SinglyLinkedList:
                 current_node.next = self.head
                 self.head = current_node 
             current_node = next_node
+        
         self.print_linked_list()
