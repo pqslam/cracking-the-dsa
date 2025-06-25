@@ -26,6 +26,14 @@ class SinglyLinkedList:
             current_node = current_node.next
         print("None")
 
+    def to_list(self):
+        llist = list()
+        current_node = self.head
+        while current_node:
+            llist.append(current_node.val)
+            current_node = current_node.next
+        return llist
+
     """
     Question 2.1: Remove Dups: Write code to remove duplicates from an unsorted linked list.
     How would you solve this problem if a temporary buffer is not allowed?
@@ -150,3 +158,71 @@ class SinglyLinkedList:
             current_node = next_node
         
         self.print_linked_list()
+
+    """
+    Question 2.5 - Sum Lists: You have two numbers represented by a linked list, where each node contains a single
+    digit. The digits are stored in reverse order, such that the 1 's digit is at the head of the list. Write a
+    function that adds the two numbers and returns the sum as a linked list.
+    EXAMPLE
+    Input: (7-> 1 -> 6) + (5 -> 9 -> 2).That is,617 + 295.
+    Output: 2 -> 1 -> 9. That is, 912.
+    FOLLOW UP
+    Suppose the digits are stored in forward order. Repeat the above problem.
+    Input: (6 -> 1 -> 7) + (2 -> 9 -> 5).That is,617 + 295.
+    Output: 9 -> 1 -> 2. That is, 912.
+    """
+
+    """
+    Possible questions:
+    - Do I need to keep num1 and num2? In case that one of them can be updated to became the sum
+    """
+    
+    "Time Complexity: O(m + n), Space Complexity: O(log(sum))"
+    def sum_lists_reverse_order(num1: "SinglyLinkedList", num2: "SinglyLinkedList") -> "SinglyLinkedList":
+        sum_linkedlist = SinglyLinkedList()
+        #convert the linkedlists to numbers
+        sum = 0
+        if not num1.head and not num2.head:
+            return sum_linkedlist
+        for llist in [num1, num2]:
+            current_node = llist.head
+            number = 0
+            base = 1
+            while current_node:
+                number += current_node.val * base
+                base = base * 10
+                current_node = current_node.next
+            sum += number
+            
+        #convert the sum to linkedlist
+        if sum == 0:
+            sum_linkedlist.add_node(0)
+        else:
+            while sum > 0:
+                digit = sum % 10
+                sum_linkedlist.add_node(digit)
+                sum //= 10
+        
+        return sum_linkedlist
+    
+    "Time Complexity: O(m + n), Space Complexity: O(log(sum))"
+    def sum_lists_forward_order(num1: "SinglyLinkedList", num2: "SinglyLinkedList") -> "SinglyLinkedList":
+        sum_linkedlist = SinglyLinkedList()
+        sum = 0
+        if not num1.head and not num2.head:
+            return sum_linkedlist
+        else:
+            for llist in [num1, num2]:
+                number = 0
+                current_node = llist.head
+                while current_node:
+                    number = (number * 10) + current_node.val
+                    current_node = current_node.next
+                sum = sum + number
+            #convert the sum to linkedlist
+            if sum == 0:
+                sum_linkedlist.add_node(0)
+            else:
+                for char in str(sum):
+                    sum_linkedlist.add_node(int(char))
+        return sum_linkedlist
